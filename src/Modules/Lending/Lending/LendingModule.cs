@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lending;
+
 public static class LendingModule
 {
     public static IServiceCollection AddLendingModule(this IServiceCollection services,
