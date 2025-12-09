@@ -13,5 +13,9 @@ builder.Services
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+app
+    .UseCatalogModule()
+    .UseBasketModule()
+    .UseLendingModule();
 
 app.Run();
