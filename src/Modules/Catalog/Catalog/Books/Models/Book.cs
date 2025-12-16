@@ -1,6 +1,4 @@
-﻿using Shared.DDD;
-
-namespace Catalog.Books.Models;
+﻿namespace Catalog.Books.Models;
 public class Book : Entity<Guid>
 {
     public string Title { get; private set; } = default!;
