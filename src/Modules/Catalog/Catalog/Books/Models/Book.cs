@@ -25,6 +25,18 @@ public class Book : Entity<Guid>
 
         return book;
     }
-    // Property setters private
-    // Update method
+    
+    public void Update(string title, List<string> category, string description, string imageFile, decimal score)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(title);
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(score);
+
+        Title = title;
+        Category = category;
+        Description = description;
+        ImageFile = imageFile;
+        Score = score;
+
+        // TODO: if score changed, rase domain event
+    }
 }
