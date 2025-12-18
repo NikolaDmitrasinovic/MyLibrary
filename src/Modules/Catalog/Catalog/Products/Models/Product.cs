@@ -1,5 +1,7 @@
-﻿namespace Catalog.Books.Models;
-public class Product : Entity<Guid>
+﻿using Catalog.Products.Events;
+
+namespace Catalog.Books.Models;
+public class Product : Aggregate<Guid>
 {
     public string Name { get; private set; } = default!;
     public List<string> Category { get; private set; } = [];
@@ -12,7 +14,7 @@ public class Product : Entity<Guid>
         ArgumentException.ThrowIfNullOrEmpty(title);
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(score);
 
-        var book = new Product
+        var product = new Product
         {
             Id = id,
             Name = title,
@@ -21,20 +23,26 @@ public class Product : Entity<Guid>
             Price = score
         };
 
-        return book;
+        product.AddDomainEvent(new ProductCreatedEvent(product));
+
+        return product;
     }
     
-    public void Update(string title, List<string> category, string description, string imageFile, decimal score)
+    public void Update(string title, List<string> category, string description, string imageFile, decimal price)
     {
         ArgumentException.ThrowIfNullOrEmpty(title);
-        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(score);
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(price);
 
         Name = title;
         Category = category;
         Description = description;
         ImageFile = imageFile;
-        Price = score;
+        Price = price;
 
-        // TODO: if score changed, rase domain event
+        if (Price != price)
+        {
+            Price = price;
+            AddDomainEvent(new ProductPriceChangedEvent(this));
+        }
     }
 }
